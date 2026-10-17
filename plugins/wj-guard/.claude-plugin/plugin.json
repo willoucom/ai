@@ -1,0 +1,7 @@
+{
+  "name": "wj-guard",
+  "description": "Hook that refuses compound or file-writing Bash commands, and tells Claude how to rewrite them.",
+  "author": {
+    "name": "Wilfried JEANNIARD"
+  }
+}

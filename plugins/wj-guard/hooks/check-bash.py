@@ -1,0 +1,154 @@
+#!/usr/bin/env python3
+"""PreToolUse hook of the Bash tool: refuse compound or file-writing commands.
+
+A refused command exits with code 2: Claude Code cancels the call and hands the
+message written on stderr back to Claude, which rewrites the command.
+"""
+import json
+import re
+import shlex
+import sys
+
+PUNCTUATION = "();<>|&"
+HEREDOCS = {"<<", "<<-", "<<<"}
+OUTPUT_REDIRECTIONS = {">", ">>", ">|", "&>", "&>>", ">&"}
+WRAPPERS = {"rtk", "sudo"}
+ASSIGNMENT = re.compile(r"[A-Za-z_][A-Za-z0-9_]*=")
+SED_IN_PLACE = re.compile(r"-[nrEsuz]*i|--in-place")
+PERL_IN_PLACE = re.compile(r"-[aelnpsSwWX0-9]*i")
+
+
+def expansions(command):
+    """Return the shell expansions written outside single quotes."""
+    found = set()
+    quote = None
+    i = 0
+    while i < len(command):
+        char = command[i]
+        if quote == "'":
+            if char == "'":
+                quote = None
+        elif char == "\\":
+            i += 1
+        elif char == "'" and quote is None:
+            quote = "'"
+        elif char == '"':
+            quote = None if quote == '"' else '"'
+        elif char == "`":
+            found.add("`…`")
+        elif char == "$":
+            following = command[i + 1 : i + 2]
+            if following == "(":
+                found.add("$(…)")
+            elif following == "{" or re.fullmatch(r"[A-Za-z0-9_@*#?$!-]", following):
+                found.add("$VAR")
+        i += 1
+    return found
+
+
+def is_punctuation(token):
+    return all(char in PUNCTUATION for char in token)
+
+
+def segments(tokens):
+    """Split the tokens into simple commands, on every shell operator."""
+    segment = []
+    for token in tokens:
+        if is_punctuation(token) and token not in OUTPUT_REDIRECTIONS | HEREDOCS and any(
+            char in token for char in ";|&"
+        ):
+            yield segment
+            segment = []
+        else:
+            segment.append(token)
+    yield segment
+
+
+def program_and_arguments(segment):
+    """Return the program of a simple command, past wrappers and assignments."""
+    words = list(segment)
+    while words and (words[0] in WRAPPERS or ASSIGNMENT.match(words[0])):
+        words.pop(0)
+    return (words[0], words[1:]) if words else (None, [])
+
+
+def changes_environment(segment):
+    """Tell whether a simple command starts with `env` or with `VAR=value`."""
+    words = list(segment)
+    while words and words[0] in WRAPPERS:
+        words.pop(0)
+    return bool(words) and (words[0] == "env" or ASSIGNMENT.match(words[0]) is not None)
+
+
+def writes_in_place(program, arguments):
+    if program == "sed":
+        return any(SED_IN_PLACE.match(argument) for argument in arguments)
+    if program == "perl":
+        return any(PERL_IN_PLACE.match(argument) for argument in arguments)
+    if program in {"awk", "gawk"}:
+        pairs = zip(arguments, arguments[1:])
+        return any(argument in {"-iinplace", "--include=inplace"} for argument in arguments) or any(
+            option in {"-i", "--include"} and value in {"inplace", "inplace.awk"} for option, value in pairs
+        )
+    if program == "tee":
+        return any(not argument.startswith("-") and argument != "/dev/null" for argument in arguments)
+    return False
+
+
+def problems(command):
+    found = []
+    try:
+        lexer = shlex.shlex(command, posix=True, punctuation_chars=True)
+        lexer.whitespace_split = True
+        tokens = list(lexer)
+    except ValueError:
+        return ["command impossible to parse (unbalanced quotes?)"]
+
+    operators = sorted(
+        {
+            token
+            for token in tokens
+            if is_punctuation(token)
+            and token not in OUTPUT_REDIRECTIONS | HEREDOCS
+            and any(char in token for char in ";|&")
+        }
+    )
+    if operators:
+        found.append(
+            f"operators {' '.join(operators)}: one Bash call runs one simple command; "
+            "for a sequence, write a script on disk and run it with one simple command"
+        )
+    if any(token in HEREDOCS for token in tokens):
+        found.append("heredoc: write the file with the Write tool")
+    if expansions(command):
+        found.append(
+            f"expansions {' '.join(sorted(expansions(command)))}: write the value itself in the command, "
+            "or put the logic in a script on disk"
+        )
+    for operator, target in zip(tokens, tokens[1:] + [""]):
+        if operator in OUTPUT_REDIRECTIONS and target != "/dev/null" and not (operator == ">&" and target.isdigit()):
+            found.append(f"redirection `{operator} {target}`: write the file with the Write tool")
+    for segment in segments(tokens):
+        if changes_environment(segment):
+            found.append(
+                "environment change (`env`, `VAR=value`): write a script on disk that sets it, "
+                "and run that script with one simple command"
+            )
+        program, arguments = program_and_arguments(segment)
+        if program == "cd":
+            found.append("`cd`: put the absolute path in the command itself (`git -C`, etc.)")
+        elif writes_in_place(program, arguments):
+            found.append(f"`{program}` writes a file: change the file with the Edit or Write tool")
+    return found
+
+
+def main():
+    command = json.load(sys.stdin).get("tool_input", {}).get("command", "")
+    found = problems(command)
+    if found:
+        print("Command refused, rewrite it:\n- " + "\n- ".join(found), file=sys.stderr)
+        sys.exit(2)
+
+
+if __name__ == "__main__":
+    main()

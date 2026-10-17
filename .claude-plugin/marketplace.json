@@ -9,6 +9,11 @@
       "name": "wj",
       "source": "./plugins/wj",
       "description": "Skills to work on an issue in its own worktree and VS Code window, and to lint the Markdown files of a repository."
+    },
+    {
+      "name": "wj-guard",
+      "source": "./plugins/wj-guard",
+      "description": "Hook that refuses compound or file-writing Bash commands, and tells Claude how to rewrite them."
     }
   ]
 }
