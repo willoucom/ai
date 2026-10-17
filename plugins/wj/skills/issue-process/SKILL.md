@@ -5,7 +5,8 @@ description: Process an issue in the `issue-<n>` worktree created by `issue-star
 
 # issue-process
 
-Argument: the issue number, `<n>`. Without a number, ask for it.
+Argument: the issue number `<n>`, an integer (`41`). Without a number, ask
+for it. If the argument is not a number, ask for it.
 
 The skill **prepares** the work, it does not do it: it drafts no plan, reads
 no code and writes no line. It stops after reading the issue.
@@ -24,11 +25,12 @@ Read `git remote get-url origin` from the main repository:
 The worktree is the one created by `issue-start`. Path:
 `<repository>/.claude/worktrees/issue-<n>`. Branch: `issue-<n>`.
 
-- If that path is not a worktree of the repository (`git worktree list`), or
-  its branch is not `issue-<n>` (`git -C <path> branch --show-current`):
-  **touch nothing**, report it and ask.
-- Move the session into the worktree, unless it already runs in it:
-  `EnterWorktree` tool with `path` = `<path>`.
+1. Check that the path is a worktree of the repository (`git worktree list`).
+   If it is not: **touch nothing**, report it and ask.
+2. Check that its branch is `issue-<n>` (`git -C <path> branch --show-current`).
+   If it is not: **touch nothing**, report it and ask.
+3. Move the session into the worktree, unless it already runs in it:
+   `EnterWorktree` tool with `path` = `<path>`.
 
 Every command that follows designates the worktree by its absolute path.
 
