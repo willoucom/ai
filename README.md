@@ -4,12 +4,17 @@ Claude Code plugin marketplace `wj-plugins`, which holds a single plugin, `wj`.
 
 ## Skills of the `wj` plugin
 
-| Skill | What it does |
-| --- | --- |
-| `/wj:issue-start <n>` | Checks that the issue exists, creates the `issue-<n>` worktree from the up-to-date default branch, copies the `.env` into it, opens a new VS Code window on it, and opens a Claude Code tab in that window with `/wj:issue-process <n>` pre-filled. |
-| `/wj:issue-process <n>` | In the `issue-<n>` worktree: starts the stack and reads the issue. |
-| `/wj:issue-finish <n>` | Waits for the CI of the PR/MR of the `issue-<n>` branch, rebase-merges it after confirmation, then removes the stack, the worktree and the branches. |
-| `/wj:lint-markdown` | Lints every Markdown file of the repository against its `.markdownlint.jsonc`, and fixes what the linter reports. |
+- `/wj:issue-start <n>`: checks that the issue exists, creates the
+  `issue-<n>` worktree from the up-to-date default branch, copies the `.env`
+  into it, opens a new VS Code window on it, and opens a Claude Code tab in
+  that window with `/wj:issue-process <n>` pre-filled.
+- `/wj:issue-process <n>`: in the `issue-<n>` worktree, starts the stack and
+  reads the issue.
+- `/wj:issue-finish <n>`: waits for the CI of the PR/MR of the `issue-<n>`
+  branch, rebase-merges it after confirmation, then removes the stack, the
+  worktree and the branches.
+- `/wj:lint-markdown`: lints every Markdown file of the repository against its
+  `.markdownlint.jsonc`, and fixes what the linter reports.
 
 The skills are in [`plugins/wj/skills/`](plugins/wj/skills/).
 
