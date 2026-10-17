@@ -1,6 +1,7 @@
 # ai
 
-Claude Code plugin marketplace `wj-plugins`, which holds a single plugin, `wj`.
+Claude Code plugin marketplace `wj-plugins`, which holds two plugins, `wj` and
+`wj-guard`.
 
 ## Skills of the `wj` plugin
 
@@ -18,23 +19,55 @@ Claude Code plugin marketplace `wj-plugins`, which holds a single plugin, `wj`.
 
 The skills are in [`plugins/wj/skills/`](plugins/wj/skills/).
 
+## Hook of the `wj-guard` plugin
+
+A `PreToolUse` hook on the Bash tool,
+[`plugins/wj-guard/hooks/check-bash.py`](plugins/wj-guard/hooks/check-bash.py),
+refuses a command that:
+
+- chains several commands: `&&`, `||`, `;`, `|`, `|&`, `&`;
+- holds a heredoc: `<<`, `<<-`, `<<<`;
+- expands something outside single quotes: `$(…)`, `` `…` ``, `$VAR`,
+  `${VAR}`;
+- redirects an output to a file: `>`, `>>`, `>|`, `&>`, `&>>`, `>& file`
+  (`/dev/null` and `2>&1` are allowed);
+- runs `cd`;
+- changes the environment of a command: `env`, `VAR=value`;
+- writes a file with `sed -i`, `perl -i`, `awk -i inplace` or `tee`.
+
+The command is parsed like the shell does: an operator inside quotes, in a
+commit message for example, is not refused. Leading `rtk` and `sudo` are
+skipped to find the program.
+
+A refused command is cancelled, and Claude receives the reasons and how to
+rewrite it. To turn the hook off, disable the plugin:
+`claude plugin disable wj-guard@wj-plugins`.
+
+The check runs with `python3`. When `python3` is not installed, the
+entry point [`check-bash.sh`](plugins/wj-guard/hooks/check-bash.sh) lets every
+command through, and warns both the user and Claude that the commands are not
+checked.
+
 ## Install
 
 ```bash
 claude plugin marketplace add willoucom/ai
 claude plugin install wj@wj-plugins
+claude plugin install wj-guard@wj-plugins
 ```
 
-The plugin is installed in the `user` scope: its skills are available in every
-project of the machine.
+The plugins are installed in the `user` scope: their skills and hooks apply to
+every project of the machine.
 
 ## Update
 
-The plugin has no `version`: every commit of this repository is a new version.
+The plugins have no `version`: every commit of this repository is a new
+version.
 
 ```bash
 claude plugin marketplace update wj-plugins
 claude plugin update wj@wj-plugins
+claude plugin update wj-guard@wj-plugins
 ```
 
 The update applies at the next session, or after `/reload-plugins`.
