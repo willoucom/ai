@@ -1,0 +1,14 @@
+{
+  "name": "wj-plugins",
+  "description": "Claude Code plugins of Wilfried JEANNIARD.",
+  "owner": {
+    "name": "Wilfried JEANNIARD"
+  },
+  "plugins": [
+    {
+      "name": "wj",
+      "source": "./plugins/wj",
+      "description": "Skills to work on an issue in its own worktree and VS Code window, and to lint the Markdown files of a repository."
+    }
+  ]
+}
