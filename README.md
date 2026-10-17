@@ -5,6 +5,14 @@ Claude Code plugin marketplace `wj-plugins`, which holds two plugins, `wj` and
 
 ## Skills of the `wj` plugin
 
+- `/wj:issue-create [<description>]`: drafts an issue from the description,
+  or from the conversation, in the language of the existing issues and in an
+  issue template of the repository (or, without one, in a basic template it
+  proposes, from
+  [`issue-create/templates/`](plugins/wj/skills/issue-create/templates/)),
+  proposes its labels, and creates it after
+  agreement. A bug issue is functional and/or technical, a feature issue is
+  functional only.
 - `/wj:issue-start <n>`: checks that the issue exists, creates the
   `issue-<n>` worktree from the up-to-date default branch, copies the `.env`
   into it, opens a new VS Code window on it, and opens a Claude Code tab in

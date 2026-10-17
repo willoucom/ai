@@ -1,6 +1,6 @@
 {
   "name": "wj",
-  "description": "Skills to work on an issue in its own worktree and VS Code window, and to lint the Markdown files of a repository.",
+  "description": "Skills to create an issue, to work on it in its own worktree and VS Code window, and to lint the Markdown files of a repository.",
   "author": {
     "name": "Wilfried JEANNIARD"
   }
