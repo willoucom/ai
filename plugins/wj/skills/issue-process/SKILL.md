@@ -44,7 +44,9 @@ guess.
 - A command that stays in the foreground (servers) is run in the background.
 - Observe that it answers, at the address the documentation gives for this
   checkout: a launch that was not seen answering is not a successful launch.
-  On failure, show the output and stop.
+  If the launch command reports by itself that the stack answers, its report
+  is the observation: no other check is run. On failure, show the output and
+  stop.
 
 ## 4. The issue
 
