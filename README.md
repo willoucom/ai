@@ -33,6 +33,10 @@ A `PreToolUse` hook on the Bash tool,
 [`plugins/wj-guard/hooks/check-bash.py`](plugins/wj-guard/hooks/check-bash.py),
 refuses a command that:
 
+- spans several lines, even inside quotes: a multi-line text, such as the
+  body of a PR or of a commit, goes in a file written with the Write tool, and
+  the file is passed to the program (`gh pr create --body-file`,
+  `git commit -F`);
 - chains several commands: `&&`, `||`, `;`, `|`, `|&`, `&`;
 - holds a heredoc: `<<`, `<<-`, `<<<`;
 - expands something outside single quotes: `$(…)`, `` `…` ``, `$VAR`,
@@ -44,7 +48,9 @@ refuses a command that:
 - writes a file with `sed -i`, `perl -i`, `awk -i inplace` or `tee`.
 
 The command is parsed like the shell does: an operator inside quotes, in a
-commit message for example, is not refused. Leading `rtk` and `sudo` are
+commit message for example, is not refused. A newline is refused everywhere,
+because Claude Code asks for a confirmation on a multi-line command even when
+its permission rules allow it. Leading `rtk` and `sudo` are
 skipped to find the program.
 
 A refused command is cancelled, and Claude receives the reasons and how to

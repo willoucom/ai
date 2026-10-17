@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PreToolUse hook of the Bash tool: refuse compound or file-writing commands.
+"""PreToolUse hook of the Bash tool: refuse multi-line, compound or file-writing commands.
 
 A refused command exits with code 2: Claude Code cancels the call and hands the
 message written on stderr back to Claude, which rewrites the command.
@@ -104,6 +104,11 @@ def problems(command):
     except ValueError:
         return ["command impossible to parse (unbalanced quotes?)"]
 
+    if "\n" in command:
+        found.append(
+            "newline: one Bash call is one line; write a multi-line text in a file with the Write tool, "
+            "and pass that file to the program (`gh pr create --body-file`, `git commit -F`, etc.)"
+        )
     operators = sorted(
         {
             token

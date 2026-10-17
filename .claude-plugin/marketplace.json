@@ -13,7 +13,7 @@
     {
       "name": "wj-guard",
       "source": "./plugins/wj-guard",
-      "description": "Hook that refuses compound or file-writing Bash commands, and tells Claude how to rewrite them."
+      "description": "Hook that refuses multi-line, compound or file-writing Bash commands, and tells Claude how to rewrite them."
     }
   ]
 }
