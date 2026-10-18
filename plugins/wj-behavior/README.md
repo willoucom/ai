@@ -11,8 +11,11 @@ It also sets rules on acting only on instruction, stopping on an irreversible
 risk, sourcing every claim, reading versions at their source, keeping
 measured values out of durable deliverables, writing the documentation, never
 modifying a file on the default branch (`main` or `master`) without creating
-a branch first, and keeping the commit history of a branch free of fixes to
-its own commits.
+a branch first, keeping the commit history of a branch free of fixes to its
+own commits, following Conventional Commits 1.0.0 in commit messages,
+rebasing a branch on the default branch of `origin` before pushing a PR/MR,
+switching to the branch of a PR/MR before reviewing or resuming it, and
+deleting the local branch of a PR/MR the user says was merged.
 
 It is applied whenever the plugin is enabled (`force-for-plugin: true`), in
 place of the style chosen with `/output-style`. It keeps the software
@@ -27,6 +30,9 @@ A `PreToolUse` hook on the Bash tool,
 reads the message of a `git commit` (from `-m`/`--message`, from the file of
 `-F`/`--file`, and from `--trailer`) and refuses the commit when the message:
 
+- has a subject that does not follow Conventional Commits 1.0.0,
+  `<type>[(scope)][!]: <description>`; any type is accepted, as the
+  specification allows;
 - credits an AI tool as an author: a `Co-Authored-By` line, a
   `Generated with` marker, 🤖, or a trailer that names Claude or Anthropic;
   naming Claude Code as the subject of the change is allowed;

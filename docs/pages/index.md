@@ -22,8 +22,9 @@ file-writing and inline-script Bash commands, and tells Claude how to rewrite
 them as one simple command.
 
 **A clean commit history.**
-[wj-behavior](plugins/wj-behavior.md) refuses a commit whose message credits
-an AI tool as an author or holds an external reference.
+[wj-behavior](plugins/wj-behavior.md) refuses a commit whose subject does not
+follow Conventional Commits, or whose message credits an AI tool as an author
+or holds an external reference.
 
 **Your code-style rules, from the first message.**
 [wj-code-style](plugins/wj-code-style.md) gives Claude its code-style rules at
