@@ -19,6 +19,11 @@
       "name": "wj-behavior",
       "source": "./plugins/wj-behavior",
       "description": "Output style, applied whenever the plugin is enabled, that sets a lean working discipline: deliver only what is asked, in the simplest form, and ask when the request is ambiguous. Hook that refuses a commit whose message credits an AI tool as an author or holds an external reference."
+    },
+    {
+      "name": "wj-code-style",
+      "source": "./plugins/wj-code-style",
+      "description": "Hook that gives Claude the code-style rules at the start of every session: an exception never crosses a function or a method implicitly."
     }
   ]
 }

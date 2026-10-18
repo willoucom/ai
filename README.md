@@ -1,7 +1,7 @@
 # ai
 
-Claude Code plugin marketplace `wj-plugins`, which holds three plugins, `wj`,
-`wj-guard` and `wj-behavior`.
+Claude Code plugin marketplace `wj-plugins`, which holds four plugins, `wj`,
+`wj-guard`, `wj-behavior` and `wj-code-style`.
 
 ## Skills of the `wj` plugin
 
@@ -115,6 +115,21 @@ messages are not checked.
 To turn off the output style and the hook, disable the plugin:
 `claude plugin disable wj-behavior@wj-plugins`.
 
+## Hook of the `wj-code-style` plugin
+
+A `SessionStart` hook adds the code-style rules of
+[`plugins/wj-code-style/code-style.md`](plugins/wj-code-style/code-style.md)
+to the context of Claude, at the start of a session and after a resume, a
+`/clear` or a compaction. Claude applies them to the code it writes and to the
+code it reviews:
+
+- an exception never crosses a function or a method implicitly: a
+  catch-and-rethrow is the intended form, never removed, and a documentation
+  annotation does not replace it.
+
+To turn the rules off, disable the plugin:
+`claude plugin disable wj-code-style@wj-plugins`.
+
 ## Install
 
 ```bash
@@ -122,6 +137,7 @@ claude plugin marketplace add willoucom/ai
 claude plugin install wj@wj-plugins
 claude plugin install wj-guard@wj-plugins
 claude plugin install wj-behavior@wj-plugins
+claude plugin install wj-code-style@wj-plugins
 ```
 
 The plugins are installed in the `user` scope: their skills, hooks and output
@@ -137,6 +153,7 @@ claude plugin marketplace update wj-plugins
 claude plugin update wj@wj-plugins
 claude plugin update wj-guard@wj-plugins
 claude plugin update wj-behavior@wj-plugins
+claude plugin update wj-code-style@wj-plugins
 ```
 
 The update applies at the next session, or after `/reload-plugins`.
