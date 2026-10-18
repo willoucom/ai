@@ -24,6 +24,11 @@
       "name": "wj-code-style",
       "source": "./plugins/wj-code-style",
       "description": "Hook that gives Claude the code-style rules at the start of every session: an exception never crosses a function or a method implicitly."
+    },
+    {
+      "name": "all",
+      "source": "./plugins/all",
+      "description": "Every plugin of the wj-plugins marketplace, installed with one command."
     }
   ]
 }
