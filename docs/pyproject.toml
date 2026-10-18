@@ -1,0 +1,12 @@
+[project]
+name = "wj-plugins-docs"
+version = "0.1.0"
+description = "Documentation site of the wj-plugins marketplace"
+requires-python = ">=3.11"
+dependencies = [
+    "zensical>=0.0.71",
+]
+
+# No build system: the site is built from these files, nothing is packaged
+# from them. uv therefore installs the dependencies without installing the
+# project itself.
