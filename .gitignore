@@ -1,0 +1,4 @@
+docs/.venv/
+docs/site/
+# Written by docs/gen.py before every build
+docs/pages/plugins/

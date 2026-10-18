@@ -1,0 +1,53 @@
+[project]
+site_name = "wj-plugins"
+site_description = "Claude Code plugins that keep Claude on the request, guard its shell commands and its commits, and take an issue from creation to merge."
+site_url = "https://www.willou.com/ai/"
+
+repo_url = "https://github.com/willoucom/ai"
+repo_name = "willoucom/ai"
+
+# The pages sit beside this file rather than under the default `docs`, which
+# would repeat the name of the component holding them. `site_dir` keeps its
+# default and thus stays outside that tree: the build never reads back what
+# it has just written.
+docs_dir = "pages"
+
+# No `nav`: the navigation follows the tree of `pages`, so a plugin whose page
+# `gen.py` writes appears in it without this file being edited.
+
+[project.theme]
+language = "en"
+features = [
+  "content.code.copy",
+  "navigation.footer",
+  "navigation.indexes",
+  "navigation.instant",
+  "navigation.instant.prefetch",
+  "navigation.path",
+  "navigation.sections",
+  "navigation.top",
+  "navigation.tracking",
+  "search.highlight",
+]
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch to light mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to system preference"
+
+[project.markdown_extensions]
+toc.permalink = true
+pymdownx.highlight.anchor_linenums = true
+pymdownx.superfences = {}
