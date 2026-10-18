@@ -14,6 +14,11 @@
       "name": "wj-guard",
       "source": "./plugins/wj-guard",
       "description": "Hook that refuses multi-line, compound, file-writing or inline-script Bash commands, and the forms that make Claude Code ask for a confirmation, and tells Claude how to rewrite them."
+    },
+    {
+      "name": "wj-behavior",
+      "source": "./plugins/wj-behavior",
+      "description": "Output style, applied whenever the plugin is enabled, that sets a lean working discipline: deliver only what is asked, in the simplest form, and ask when the request is ambiguous."
     }
   ]
 }

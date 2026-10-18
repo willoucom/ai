@@ -1,0 +1,7 @@
+{
+  "name": "wj-behavior",
+  "description": "Output style, applied whenever the plugin is enabled, that sets a lean working discipline: deliver only what is asked, in the simplest form, and ask when the request is ambiguous.",
+  "author": {
+    "name": "Wilfried JEANNIARD"
+  }
+}

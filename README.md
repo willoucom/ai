@@ -1,7 +1,7 @@
 # ai
 
-Claude Code plugin marketplace `wj-plugins`, which holds two plugins, `wj` and
-`wj-guard`.
+Claude Code plugin marketplace `wj-plugins`, which holds three plugins, `wj`,
+`wj-guard` and `wj-behavior`.
 
 ## Skills of the `wj` plugin
 
@@ -73,16 +73,32 @@ entry point [`check-bash.sh`](plugins/wj-guard/hooks/check-bash.sh) lets every
 command through, and warns both the user and Claude that the commands are not
 checked.
 
+## Output style of the `wj-behavior` plugin
+
+The output style
+[`plugins/wj-behavior/output-styles/wj-behavior.md`](plugins/wj-behavior/output-styles/wj-behavior.md)
+sets a lean working discipline: build only what is asked, choose the simplest
+solution, deliver small increments, and ask a question when the request is
+ambiguous.
+
+It is applied whenever the plugin is enabled (`force-for-plugin: true`), in
+place of the style chosen with `/output-style`. It keeps the software
+engineering instructions of Claude Code (`keep-coding-instructions: true`).
+It applies to the main conversation and to forks, not to the other
+subagents. To turn it off, disable the plugin:
+`claude plugin disable wj-behavior@wj-plugins`.
+
 ## Install
 
 ```bash
 claude plugin marketplace add willoucom/ai
 claude plugin install wj@wj-plugins
 claude plugin install wj-guard@wj-plugins
+claude plugin install wj-behavior@wj-plugins
 ```
 
-The plugins are installed in the `user` scope: their skills and hooks apply to
-every project of the machine.
+The plugins are installed in the `user` scope: their skills, hooks and output
+style apply to every project of the machine.
 
 ## Update
 
@@ -93,6 +109,7 @@ version.
 claude plugin marketplace update wj-plugins
 claude plugin update wj@wj-plugins
 claude plugin update wj-guard@wj-plugins
+claude plugin update wj-behavior@wj-plugins
 ```
 
 The update applies at the next session, or after `/reload-plugins`.
