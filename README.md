@@ -85,7 +85,30 @@ It is applied whenever the plugin is enabled (`force-for-plugin: true`), in
 place of the style chosen with `/output-style`. It keeps the software
 engineering instructions of Claude Code (`keep-coding-instructions: true`).
 It applies to the main conversation and to forks, not to the other
-subagents. To turn it off, disable the plugin:
+subagents.
+
+## Hook of the `wj-behavior` plugin
+
+A `PreToolUse` hook on the Bash tool,
+[`plugins/wj-behavior/hooks/check-commit.py`](plugins/wj-behavior/hooks/check-commit.py),
+reads the message of a `git commit` (from `-m`/`--message`, from the file of
+`-F`/`--file`, and from `--trailer`) and refuses the commit when the message:
+
+- credits an AI tool as an author: a `Co-Authored-By` line, a
+  `Generated with` marker, 🤖, or a trailer that names Claude or Anthropic;
+  naming Claude Code as the subject of the change is allowed;
+- holds an external reference: `#123`, `!123` or a URL.
+
+Any other command, including `git push`, goes through. A refused commit is
+cancelled, and Claude receives the reasons and rewrites the message. The PR/MR
+texts are not checked: the output style covers them.
+
+The check runs with `python3`. When `python3` is not installed, the entry
+point [`check-commit.sh`](plugins/wj-behavior/hooks/check-commit.sh) lets
+every command through, and warns both the user and Claude that the commit
+messages are not checked.
+
+To turn off the output style and the hook, disable the plugin:
 `claude plugin disable wj-behavior@wj-plugins`.
 
 ## Install

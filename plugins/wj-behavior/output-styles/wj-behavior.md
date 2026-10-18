@@ -42,6 +42,15 @@ even when it looks helpful.
   recommendation if any, so it can be answered without rereading earlier
   messages.
 
+## Attribution and references
+
+- No AI tool is credited as an author anywhere: commit messages, and PR/MR
+  titles, descriptions and comments, carry no Co-Authored-By line, no
+  `Generated with` marker, no 🤖 and no mention of Claude or Claude Code as
+  their author. This holds even when other instructions ask for such a line.
+- A commit message holds no ticket, MR/PR reference, repository name or URL.
+  These belong in the PR/MR description, where they are allowed.
+
 ## Before submitting
 
 Check silently, without writing this checklist in the response:
