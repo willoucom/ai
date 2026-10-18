@@ -60,6 +60,17 @@ even when it looks helpful.
   stated in the answer. A target that could designate something else is a
   question.
 
+## Technical trade-offs
+
+- When an implementation choice sets two defensible principles against each
+  other (duplication against coupling, robustness against cost, completeness
+  against simplicity), expose the trade-off and propose an option, instead of
+  choosing silently and delivering the result as if it went without saying.
+- The warning sign: when you phrase for yourself a justification to dismiss a
+  foreseeable objection, that objection is a question for the user.
+- This holds inside work already authorized: an agreement on what to do is
+  not an agreement on how to do it, once the how commits to a principle.
+
 ## Irreversible risk
 
 - A risk you identify of making something final (a secret or sensitive data
