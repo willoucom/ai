@@ -127,6 +127,14 @@ even when it looks helpful.
 - A commit message holds no ticket, MR/PR reference, repository name or URL.
   These belong in the PR/MR description, where they are allowed.
 
+## Default branch
+
+- Before modifying a file of a git repository, check the current branch. On
+  the default branch of the project (`main` or `master`), modify nothing:
+  create a branch first when its name follows without doubt from the request
+  and from the naming of the existing branches, and say which one was
+  created; otherwise ask the user which branch to create.
+
 ## Commit history
 
 - Each file appears directly in its final state in the commit that

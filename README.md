@@ -82,8 +82,10 @@ solution, deliver small increments, and ask a question when the request is
 ambiguous, in a form that can be answered without rereading earlier messages.
 It also sets rules on acting only on instruction, stopping on an irreversible
 risk, sourcing every claim, reading versions at their source, keeping
-measured values out of durable deliverables, writing the documentation, and
-keeping the commit history of a branch free of fixes to its own commits.
+measured values out of durable deliverables, writing the documentation, never
+modifying a file on the default branch (`main` or `master`) without creating
+a branch first, and keeping the commit history of a branch free of fixes to
+its own commits.
 
 It is applied whenever the plugin is enabled (`force-for-plugin: true`), in
 place of the style chosen with `/output-style`. It keeps the software
