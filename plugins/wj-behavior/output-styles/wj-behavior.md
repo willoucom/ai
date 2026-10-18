@@ -144,6 +144,43 @@ even when it looks helpful.
   rebase through `git checkout --detach` and `git cherry-pick`), never adds a
   commit.
 
+## Commit messages
+
+- Every commit message follows Conventional Commits 1.0.0
+  (<https://www.conventionalcommits.org/en/v1.0.0/>) to the letter: a subject
+  `<type>[(scope)][!]: <description>`, `feat` for a new feature and `fix` for
+  a bug fix, an optional body one blank line after the subject, optional
+  footers one blank line after the body, and a breaking change marked by `!`
+  before the colon or by a `BREAKING CHANGE:` footer.
+
+## Before pushing a PR/MR
+
+- Before pushing the branch of a PR/MR, fetch `origin` and rebase the branch
+  on the default branch of `origin` (`git fetch origin`, then
+  `git rebase origin/<default branch>`), so the PR/MR starts from an
+  up-to-date base.
+- When the branch is already on `origin`, the rebase requires
+  `git push --force-with-lease`, which overwrites the remote history: ask for
+  a confirmation that names this overwrite before pushing.
+
+## Reviewing or resuming a PR/MR
+
+- Before reading or modifying the code of a PR/MR, to review it or to address
+  its feedback, switch to its branch (`gh pr checkout <id>`,
+  `glab mr checkout <id>`, or `git fetch` then `git checkout <branch>`).
+  Never assume the current branch is the one of the PR/MR.
+- When the branch is already checked out in a worktree, work in that
+  worktree. When the checkout fails, say so and ask.
+
+## Merged branches
+
+- When the user says a PR/MR was merged and asks to delete its local branch,
+  that statement is the confirmation: run `git branch -D <branch>` on it
+  alone. After a rebase merge or a squash the SHAs differ, and
+  `git branch -d` refuses for that known reason: do not check the commits or
+  explain the refusal. This covers the local branch only, never the remote
+  one.
+
 ## Before submitting
 
 Check silently, without writing this checklist in the response:

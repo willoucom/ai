@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""PreToolUse hook of the Bash tool: refuse a `git commit` whose message credits an AI tool as an
-author or holds an external reference.
+"""PreToolUse hook of the Bash tool: refuse a `git commit` whose subject does not follow
+Conventional Commits 1.0.0, or whose message credits an AI tool as an author or holds an external
+reference.
 
 The message is read from `-m`/`--message`, from the file of `-F`/`--file`, and from `--trailer`.
 A refused command exits with code 2: Claude Code cancels the call and hands the message written
@@ -38,6 +39,7 @@ MARKERS = re.compile(r"generated with|🤖", re.IGNORECASE)
 TRAILER = re.compile(r"^[A-Za-z0-9-]+\s*:\s")
 AI_NAME = re.compile(r"\b(claude|anthropic)\b", re.IGNORECASE)
 EXTERNAL_REFERENCES = re.compile(r"(?<![\w&])#\d+\b|(?<!\w)!\d+\b|https?://[^\s)>\]]+")
+CONVENTIONAL_SUBJECT = re.compile(r"[A-Za-z]+(\([^()]+\))?!?: \S")
 
 
 def is_punctuation(token):
@@ -127,6 +129,12 @@ def trailer_block(message):
 
 def problems(message, trailers):
     found = []
+    subject = message.strip().splitlines()[0] if message.strip() else ""
+    if subject and not CONVENTIONAL_SUBJECT.match(subject):
+        found.append(
+            f"subject `{subject}`: a commit message follows Conventional Commits 1.0.0, "
+            "with a subject `<type>[(scope)][!]: <description>`"
+        )
     attributions = CO_AUTHOR.findall(message) + MARKERS.findall(message)
     attributions += [line for line in trailer_block(message) + trailers if AI_NAME.search(line) or CO_AUTHOR.match(line)]
     for attribution in dict.fromkeys(attribution.strip() for attribution in attributions):
