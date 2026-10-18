@@ -45,7 +45,18 @@ refuses a command that:
   (`/dev/null` and `2>&1` are allowed);
 - runs `cd`;
 - changes the environment of a command: `env`, `VAR=value`;
-- writes a file with `sed -i`, `perl -i`, `awk -i inplace` or `tee`.
+- writes a file with `sed -i`, `perl -i`, `awk -i inplace` or `tee`;
+- runs an inline script with `python -c`, `python3 -c`, `bash -c`, `sh -c` or
+  `zsh -c`: the script goes in a file written with the Write tool, and that
+  file is run;
+- passes `/dev/null` as an argument of `curl` (`-o /dev/null`): while
+  `permissions.blockReadsOutsideWorkingDirectories` is on, Claude Code asks
+  for a confirmation on this path outside the working directories, even in
+  auto mode; `curl -s -I -w "%{http_code}\n" <url>` gets the HTTP status
+  alone;
+- slices an array with `[m:n]` in the `--jq`/`-q` expression of `gh`: Claude
+  Code asks for a confirmation on it, even in auto mode; `limit(n; .[])`
+  replaces `.[0:n][]`.
 
 The command is parsed like the shell does: an operator inside quotes, in a
 commit message for example, is not refused. A newline is refused everywhere,

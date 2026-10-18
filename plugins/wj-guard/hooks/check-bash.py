@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""PreToolUse hook of the Bash tool: refuse multi-line, compound or file-writing commands.
+"""PreToolUse hook of the Bash tool: refuse multi-line, compound, file-writing or inline-script
+commands, and the forms that make Claude Code ask for a confirmation.
 
 A refused command exits with code 2: Claude Code cancels the call and hands the
 message written on stderr back to Claude, which rewrites the command.
 """
 import json
+import os
 import re
 import shlex
 import sys
@@ -16,6 +18,10 @@ WRAPPERS = {"rtk", "sudo"}
 ASSIGNMENT = re.compile(r"[A-Za-z_][A-Za-z0-9_]*=")
 SED_IN_PLACE = re.compile(r"-[nrEsuz]*i|--in-place")
 PERL_IN_PLACE = re.compile(r"-[aelnpsSwWX0-9]*i")
+INTERPRETERS = re.compile(r"python[0-9.]*|bash|sh|zsh")
+INTERPRETER_VALUE_OPTIONS = {"-o", "+o", "-O", "+O", "-W", "-X"}
+INLINE_SCRIPT_OPTION = re.compile(r"-[A-Za-z]*c[A-Za-z]*")
+JQ_SLICE = re.compile(r"\[[^\]]*:[^\]]*\]")
 
 
 def expansions(command):
@@ -95,6 +101,58 @@ def writes_in_place(program, arguments):
     return False
 
 
+def runs_inline_script(program, arguments):
+    """Tell whether an interpreter runs a script given on its command line (`python3 -c`, `bash -c`)."""
+    if program is None or not INTERPRETERS.fullmatch(os.path.basename(program)):
+        return False
+    words = iter(arguments)
+    for word in words:
+        if word in INTERPRETER_VALUE_OPTIONS:
+            next(words, None)
+        elif word == "--" or word == "-m" or not word.startswith(("-", "+")):
+            return False
+        elif not word.startswith("--") and INLINE_SCRIPT_OPTION.fullmatch(word):
+            return True
+    return False
+
+
+def names_dev_null(arguments):
+    """Tell whether arguments pass `/dev/null` to the program itself, not as the target of a redirection.
+
+    `/dev/null` is outside the working directories: while `permissions.blockReadsOutsideWorkingDirectories`
+    is on, Claude Code asks for a confirmation on an argument that names it, even in auto mode and
+    whatever the permission rules.
+    """
+    previous = None
+    for word in arguments:
+        if previous not in OUTPUT_REDIRECTIONS | {"<"} and (
+            word == "/dev/null" or (word.startswith("-") and word.endswith("/dev/null"))
+        ):
+            return True
+        previous = word
+    return False
+
+
+def slices_in_jq(arguments):
+    """Tell whether a `--jq`/`-q` expression of `gh` slices an array with `[m:n]`.
+
+    Claude Code asks for a confirmation on such an expression, even in auto mode.
+    """
+    words = iter(arguments)
+    for word in words:
+        if word in {"-q", "--jq"}:
+            expression = next(words, "")
+        elif word.startswith("--jq="):
+            expression = word[len("--jq=") :]
+        elif word.startswith("-q"):
+            expression = word[len("-q") :]
+        else:
+            continue
+        if JQ_SLICE.search(expression):
+            return True
+    return False
+
+
 def problems(command):
     found = []
     try:
@@ -144,6 +202,21 @@ def problems(command):
             found.append("`cd`: put the absolute path in the command itself (`git -C`, etc.)")
         elif writes_in_place(program, arguments):
             found.append(f"`{program}` writes a file: change the file with the Edit or Write tool")
+        elif runs_inline_script(program, arguments):
+            found.append(
+                f"`{program}` runs an inline script: write the script in a file with the Write tool, "
+                "and run that file with one simple command"
+            )
+        elif program == "curl" and names_dev_null(arguments):
+            found.append(
+                "`curl` passes `/dev/null` as an argument, which makes Claude Code ask for a confirmation; "
+                'to get only the HTTP status, use `curl -s -I -w "%{http_code}\\n" <url>`'
+            )
+        elif program == "gh" and slices_in_jq(arguments):
+            found.append(
+                "`--jq` slices with `[m:n]`, which makes Claude Code ask for a confirmation; "
+                "use `limit(n; .[])` instead of `.[0:n][]`"
+            )
     return found
 
 
