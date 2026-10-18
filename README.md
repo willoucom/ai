@@ -7,25 +7,24 @@ commands and its commits, and take an issue from creation to merge.**
 
 ## What you get
 
-- **[wj-behavior](plugins/wj-behavior/)**: Claude does what you asked, and
-  nothing more, and never credits itself in your commits.
-- **[wj-guard](plugins/wj-guard/)**: Bash commands you can approve at a
-  glance, one simple command at a time.
-- **[wj-code-style](plugins/wj-code-style/)**: your code-style rules, from
-  the first message of every session.
-- **[wj](plugins/wj/)**: one issue, one worktree, one VS Code window, from
-  its creation to its merge.
+The [wj](plugins/wj/) plugin:
+
+- Claude does what you asked, and nothing more, and never credits itself in
+  your commits.
+- Bash commands you can approve at a glance, one simple command at a time.
+- Your code-style rules, from the first message of every session.
+- One issue, one worktree, one VS Code window, from its creation to its
+  merge.
 
 ## Install
 
 ```bash
 claude plugin marketplace add willoucom/ai
-claude plugin install all@wj-plugins
+claude plugin install wj@wj-plugins
 ```
 
-[`all`](plugins/all/) installs every plugin. Each plugin also works on its
-own: the [install page](https://www.willou.com/ai/install/) shows how to
-install only the ones you want, and how to update them.
+The [install page](https://www.willou.com/ai/install/) shows how to update
+it.
 
 ## Documentation
 

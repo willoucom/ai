@@ -1,7 +1,0 @@
-{
-  "name": "wj-behavior",
-  "description": "Output style, applied whenever the plugin is enabled, that sets a lean working discipline: deliver only what is asked, in the simplest form, and ask when the request is ambiguous. Hook that refuses a commit whose subject does not follow Conventional Commits, or whose message credits an AI tool as an author or holds an external reference.",
-  "author": {
-    "name": "Wilfried JEANNIARD"
-  }
-}
