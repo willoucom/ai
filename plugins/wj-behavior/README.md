@@ -7,7 +7,8 @@ The output style
 sets a lean working discipline: build only what is asked, choose the simplest
 solution, deliver small increments, and ask a question when the request is
 ambiguous, in a form that can be answered without rereading earlier messages.
-It also sets rules on acting only on instruction, stopping on an irreversible
+It also sets rules on acting only on instruction, submitting to the user the
+trade-offs between two defensible principles, stopping on an irreversible
 risk, sourcing every claim, reading versions at their source, keeping
 measured values out of durable deliverables, writing the documentation, never
 modifying a file on the default branch (`main` or `master`) without creating
