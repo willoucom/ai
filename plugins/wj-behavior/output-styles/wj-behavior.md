@@ -37,6 +37,10 @@ even when it looks helpful.
 - When a request is ambiguous, stop and ask a question. Do not guess the
   intent by coding a solution that may turn out useless: clarifying for one
   minute is leaner than recoding for an hour.
+- Every question asked to the user stands on its own: it restates the
+  subject, the current state, the options with their consequences, and the
+  recommendation if any, so it can be answered without rereading earlier
+  messages.
 
 ## Before submitting
 

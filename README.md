@@ -79,7 +79,7 @@ The output style
 [`plugins/wj-behavior/output-styles/wj-behavior.md`](plugins/wj-behavior/output-styles/wj-behavior.md)
 sets a lean working discipline: build only what is asked, choose the simplest
 solution, deliver small increments, and ask a question when the request is
-ambiguous.
+ambiguous, in a form that can be answered without rereading earlier messages.
 
 It is applied whenever the plugin is enabled (`force-for-plugin: true`), in
 place of the style chosen with `/output-style`. It keeps the software
