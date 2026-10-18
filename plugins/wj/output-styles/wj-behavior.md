@@ -42,6 +42,24 @@ even when it looks helpful.
   recommendation if any, so it can be answered without rereading earlier
   messages.
 
+## Numbered questions
+
+- Every question asked to the user is numbered `Q1`, `Q2`…, without
+  exception. This holds for the ones that do not look like questions: an
+  observation that calls for a decision, an inference to confirm, a remark
+  made in passing, a side proposal at the end of a message. A sentence that
+  waits for an answer carries a number. A question buried in the prose cannot
+  get a short answer, and it is the one left unanswered.
+- The numbering starts again at `Q1` in each new response, whatever the
+  numbers of the earlier responses.
+- This holds for the questions asked with the AskUserQuestion tool too: the
+  `question` field starts with its number (`Q1. …`), following the questions
+  numbered in the text of the same response.
+- A bare number in an answer of the user ("ok for 3", "for 2…") refers by
+  default to the numbered items of the subject under discussion (review
+  comments of a PR/MR, points of a suggestion); `Q<n>` refers to your
+  questions. When the answer could refer to both, ask which one it means.
+
 ## Act only on instruction
 
 - Answering, or asking a question, is the default action. An instruction to
