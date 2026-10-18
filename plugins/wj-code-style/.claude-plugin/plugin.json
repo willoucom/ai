@@ -1,7 +1,0 @@
-{
-  "name": "wj-code-style",
-  "description": "Hook that gives Claude the code-style rules at the start of every session: an exception never crosses a function or a method implicitly.",
-  "author": {
-    "name": "Wilfried JEANNIARD"
-  }
-}

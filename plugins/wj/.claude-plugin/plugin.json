@@ -1,6 +1,6 @@
 {
   "name": "wj",
-  "description": "Skills to create an issue, to work on it in its own worktree and VS Code window, and to lint the Markdown files of a repository.",
+  "description": "Output style that sets a lean working discipline, hooks that guard Bash commands and commit messages and give Claude the code-style rules, and skills to work on an issue in its own worktree and VS Code window and to lint the Markdown files of a repository.",
   "author": {
     "name": "Wilfried JEANNIARD"
   }

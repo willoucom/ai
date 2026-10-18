@@ -8,27 +8,7 @@
     {
       "name": "wj",
       "source": "./plugins/wj",
-      "description": "Skills to work on an issue in its own worktree and VS Code window, and to lint the Markdown files of a repository."
-    },
-    {
-      "name": "wj-guard",
-      "source": "./plugins/wj-guard",
-      "description": "Hook that refuses multi-line, compound, file-writing or inline-script Bash commands, and the forms that make Claude Code ask for a confirmation, and tells Claude how to rewrite them."
-    },
-    {
-      "name": "wj-behavior",
-      "source": "./plugins/wj-behavior",
-      "description": "Output style, applied whenever the plugin is enabled, that sets a lean working discipline: deliver only what is asked, in the simplest form, and ask when the request is ambiguous. Hook that refuses a commit whose subject does not follow Conventional Commits, or whose message credits an AI tool as an author or holds an external reference."
-    },
-    {
-      "name": "wj-code-style",
-      "source": "./plugins/wj-code-style",
-      "description": "Hook that gives Claude the code-style rules at the start of every session: an exception never crosses a function or a method implicitly."
-    },
-    {
-      "name": "all",
-      "source": "./plugins/all",
-      "description": "Every plugin of the wj-plugins marketplace, installed with one command."
+      "description": "Output style that sets a lean working discipline, hooks that guard Bash commands and commit messages and give Claude the code-style rules, and skills to work on an issue in its own worktree and VS Code window and to lint the Markdown files of a repository."
     }
   ]
 }

@@ -1,7 +1,0 @@
-{
-  "name": "wj-guard",
-  "description": "Hook that refuses multi-line, compound, file-writing or inline-script Bash commands, and the forms that make Claude Code ask for a confirmation, and tells Claude how to rewrite them.",
-  "author": {
-    "name": "Wilfried JEANNIARD"
-  }
-}
